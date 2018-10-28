@@ -1,6 +1,6 @@
 import requests, os
 from bs4 import BeautifulSoup as bs
-
+import time
 #selenium webdriver imports
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
@@ -12,12 +12,12 @@ def fetchLinksUsingSelenium(base_url):
     chrome_options.add_argument("--headless")
     driver = webdriver.Chrome(executable_path=os.path.abspath("chromedriver"),   chrome_options=chrome_options)
     driver.get(base_url)
-    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    time.sleep(5)
     elems = driver.find_elements_by_xpath("//a[@href]")
     for elem in elems:
         link = elem.get_attribute("href")
         unique_links.add(link)
-        #print(link)
+        print(link)
     return unique_links
 
 def getAllBaseUrlLinks(base_url):
@@ -49,11 +49,12 @@ def getAllBaseUrlLinks(base_url):
                     #print the exception to the console
                     print(ee)
     #return the set of unique links
-    elif content_length < 3000:
+    elif response.status_code == 200 and content_length < 3000:
         print("Fetching Content Using SELENIUM")
         #fetch page using Selenium
         links = fetchLinksUsingSelenium(base_url)
         for link in links:
+            print(link)
             unique_links.add(link)
     else:
         pass
@@ -84,9 +85,9 @@ def addUniqeLinksToFile(base_url, link_file="output/unique_links.txt"):
 
 def app(base_url):
     #fetch all unique links and print them to a file
-    #fetchLinksFromListOfUrls(base_url)
+    fetchLinksFromListOfUrls(base_url)
     #getAllBaseUrlLinks(base_url)
-    fetchLinksUsingSelenium(base_url)
+    #fetchLinksUsingSelenium(base_url)
 
 #allow this code to be imported as a module
 if __name__ == "__main__":
