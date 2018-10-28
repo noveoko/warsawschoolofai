@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup as bs
 
-base_url = 'theschool.ai'
-
 def getAllBaseUrlLinks(base_url):
     #get the raw data from base_url
     response = requests.get(base_url)
@@ -19,4 +17,21 @@ def getAllBaseUrlLinks(base_url):
         #return the set of unique links
         return unique_links
 
-        
+def addUniqeLinksToFile(base_url, link_file="unique_links.txt"):
+    #open link_file as a file object using with
+    with open(link_file) as outfile:
+        #fetch all the links
+        sitelinks = getAllBaseUrlLinks(base_url)
+        #for every unique link print it to a new line
+        for link in sitelinks:
+            #print the link then a newline character
+            outfile.write(f"{link}/n")
+
+def app(base_url):
+    #fetch all unique links and print them to a file
+    addUniqueLinksToFile(base_url)
+
+
+#allow this code to be imported as a module
+if __name__ == "__main__":
+    app("http://theschool.ai")
