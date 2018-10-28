@@ -24,20 +24,17 @@ def getAllBaseUrlLinks(base_url):
             except exception as ee:
                 #print the exception to the console
                 print(ee)
-        #for every link found add it to the set unique_links
-
-        #return the set of unique links
-        return unique_links
+    #return the set of unique links
+    return unique_links
 
 def addUniqeLinksToFile(base_url, link_file="unique_links.txt"):
     #open link_file as a file object using with
     with open(link_file, 'w') as outfile:
         #fetch all the links
         sitelinks = getAllBaseUrlLinks(base_url)
-        #for every unique link print it to a new line
         for link in sitelinks:
-            #print the link then a newline character
-            outfile.write(f"{link}/n")
+            #for every unique link print it to a new line
+            outfile.write(f"{link}\n")
 
 def app(base_url):
     #fetch all unique links and print them to a file
@@ -46,4 +43,4 @@ def app(base_url):
 
 #allow this code to be imported as a module
 if __name__ == "__main__":
-    app("http://theschool.ai")
+    app("https://theschool.ai")
