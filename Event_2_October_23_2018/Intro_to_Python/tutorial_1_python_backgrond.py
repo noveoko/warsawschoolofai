@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup as bs
 
 def getAllBaseUrlLinks(base_url):
+    unique_links = set()
     #get the raw data from base_url
     response = requests.get(base_url)
     #check to make sure that the page response is acceptable
@@ -12,14 +13,25 @@ def getAllBaseUrlLinks(base_url):
         soup = bs(raw_html, 'html.parser')
         #fetch all of the links from the page
         links = soup.find_all("a")
+        #for every link found add `HREF` to unique_links
+        for link in links:
+            #try to extract the href from the link
+            try:
+                href = link['href']
+                #add the href to the set of unique_links
+                unique_links.add(href)
+            #if that fails raise an exception
+            except exception as ee:
+                #print the exception to the console
+                print(ee)
         #for every link found add it to the set unique_links
-        unique_links = set(links)
+
         #return the set of unique links
         return unique_links
 
 def addUniqeLinksToFile(base_url, link_file="unique_links.txt"):
     #open link_file as a file object using with
-    with open(link_file) as outfile:
+    with open(link_file, 'w') as outfile:
         #fetch all the links
         sitelinks = getAllBaseUrlLinks(base_url)
         #for every unique link print it to a new line
@@ -29,7 +41,7 @@ def addUniqeLinksToFile(base_url, link_file="unique_links.txt"):
 
 def app(base_url):
     #fetch all unique links and print them to a file
-    addUniqueLinksToFile(base_url)
+    addUniqeLinksToFile(base_url)
 
 
 #allow this code to be imported as a module
