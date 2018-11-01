@@ -91,4 +91,4 @@ def app(base_url):
 
 #allow this code to be imported as a module
 if __name__ == "__main__":
-    app("https://theschool.ai")
+    app("https://improv.pl")
